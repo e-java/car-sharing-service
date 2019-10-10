@@ -1,0 +1,10 @@
+server:
+  port: 8084
+
+spring:
+  cloud:
+    gcp:
+      firestore:
+        project-id: fair-myth-255211
+        credentials:
+          location: ${keyLocation:file:/Users/Dmytro_Melnychuk/Documents/configs/GCP/fair-myth-255211-8fed7c42fd21.json}
