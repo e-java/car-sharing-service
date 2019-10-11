@@ -1,13 +1,15 @@
 package com.ex.java.carsharing.service.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Car {
-    private String brand;
-    private int seatsCount;
+    private String modelName;
+    private String engine;
+    private String manufacturer;
+    private List<String> colors;
+    private String transmission;
+    private Integer seats;
 }

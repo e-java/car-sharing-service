@@ -1,10 +1,9 @@
 package com.ex.java.carsharing.service.controllers;
 
-import com.ex.java.carsharing.service.entities.Car;
 import com.ex.java.carsharing.service.models.CarBookingRequest;
+import com.ex.java.carsharing.service.models.CarModel;
 import com.ex.java.carsharing.service.services.CarService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,17 +14,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/cars")
+@RequestMapping("api/cars")
 public class CarController {
 
     private final CarService carService;
 
     @GetMapping
-    public ResponseEntity<List<Car>> findCars(
+    public ResponseEntity<List<CarModel>> findCars(
             @RequestParam(value = "brand", required = false) String brand,
             @RequestParam(value = "seats", required = false) Integer seatsCount
     ) {
@@ -39,10 +39,9 @@ public class CarController {
     }
 
     @PostMapping
-    public ResponseEntity createCar(@RequestBody Car car) {
-        boolean created = carService.createCar(car);
-        return created
-                ? ResponseEntity.status(HttpStatus.CREATED).build()
-                : ResponseEntity.badRequest().build();
+    public ResponseEntity<String> createCar(@RequestBody CarModel car) {
+        return carService.createCar(car)
+                .map(carId -> ResponseEntity.created(URI.create(String.format("/api/cars/%s", carId))).body(carId))
+                .orElse(ResponseEntity.badRequest().build());
     }
 }
